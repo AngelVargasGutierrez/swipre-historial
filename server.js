@@ -26,4 +26,8 @@ app.post('/api/__reset', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3013;
-app.listen(PORT, () => console.log(`swipre-historial escuchando en http://localhost:${PORT}`));
+if (import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) {
+  app.listen(PORT, () => console.log(`swipre-historial escuchando en http://localhost:${PORT}`));
+}
+
+export { app };
