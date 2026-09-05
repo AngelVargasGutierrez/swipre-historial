@@ -1,0 +1,24 @@
+name: Pruebas Postman RF-003 (Newman)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  postman:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar dependencias
+        run: npm install
+      - name: Levantar servidor en segundo plano y esperar a que arranque
+        run: |
+          node server.js &
+          sleep 2
+      - name: Ejecutar colección de Postman con Newman
+        run: npm run test:postman

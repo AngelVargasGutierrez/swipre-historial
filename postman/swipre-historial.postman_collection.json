@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "swipre-historial (RF-003 Visualizar historial de acciones)",
+    "description": "Coleccion Postman para RF-003. CP-03-01 (exito y flujo alterno de historial vacio), CP-03-02 (registro automatico y limite de 20) y CP-03-03 (consistencia sin duplicados).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0 - Reiniciar estado en memoria (solo una vez, al inicio)",
+      "request": { "method": "POST", "url": "{{base_url}}/api/__reset" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 200 OK', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "CP-03-01 (Flujo Alterno) - Historial vacío al inicio",
+      "request": { "method": "GET", "url": "{{base_url}}/api/historial" },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+            "pm.test('El historial esta vacio', () => pm.expect(pm.response.json()).to.eql([]));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "CP-03-01 - Registrar primera acción (Walter Salas)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/historial",
+        "body": { "mode": "raw", "raw": "{\"usuario\":\"Walter Salas\",\"accion\":\"Creó usuario\",\"modulo\":\"Usuarios\",\"detalle\":\"Nuevo usuario: nueva.admin\"}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 201 Created', () => pm.response.to.have.status(201));"] } }]
+    },
+    {
+      "name": "CP-03-01 - Registrar segunda acción (Angel Vargas)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/historial",
+        "body": { "mode": "raw", "raw": "{\"usuario\":\"Angel Vargas\",\"accion\":\"Registró nuevo lote\",\"modulo\":\"Medicamentos\",\"detalle\":\"Lote L-2026-001\"}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 201 Created', () => pm.response.to.have.status(201));"] } }]
+    },
+    {
+      "name": "CP-03-01 - Consultar historial (más reciente primero)",
+      "request": { "method": "GET", "url": "{{base_url}}/api/historial" },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+            "const body = pm.response.json();",
+            "pm.test('2 registros', () => pm.expect(body.length).to.eql(2));",
+            "pm.test('El mas reciente (Angel Vargas) va primero', () => pm.expect(body[0].usuario).to.eql('Angel Vargas'));"
+          ]
+        }
+      }]
+    },
+    {
+      "name": "CP-03-02 - Registro automático se refleja de inmediato",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/historial",
+        "body": { "mode": "raw", "raw": "{\"usuario\":\"Ana Torres\",\"accion\":\"Activó usuario\",\"modulo\":\"Usuarios\",\"detalle\":\"Reactivó a usuario.deshabilitado\"}" }
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Status 201 Created', () => pm.response.to.have.status(201));"] } }]
+    },
+    {
+      "name": "CP-03-03 - Consistencia: 3 operaciones = 3 registros, sin duplicados",
+      "request": { "method": "GET", "url": "{{base_url}}/api/historial" },
+      "event": [{
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+            "const body = pm.response.json();",
+            "pm.test('Exactamente 3 registros (sin duplicados ni omisiones)', () => pm.expect(body.length).to.eql(3));"
+          ]
+        }
+      }]
+    }
+  ]
+}

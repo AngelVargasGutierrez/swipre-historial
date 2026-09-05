@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin:0; background:#1e1e1e; font-family:'Cascadia Code','Consolas',monospace; }
+  .titlebar { background:#323233; color:#ccc; padding:8px 14px; font-size:13px; border-bottom:1px solid #000; }
+  .term { padding:20px 24px; color:#d4d4d4; font-size:13px; line-height:1.5; white-space:pre-wrap; width:1000px; }
+  .cmd { color:#9cdcfe; }
+  .prompt { color:#6a9955; }
+  .req { color:#dcdcaa; font-weight:bold; }
+  .meth { color:#569cd6; }
+  .ok { color:#4ec9b0; font-weight:bold; }
+  .summary { color:#569cd6; font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="titlebar">swipre-historial — npm run test:postman (Newman / Postman)</div>
+<div class="term">
+<span class="prompt">PS D:\...\swipre-historial&gt;</span> <span class="cmd">npm run test:postman</span>
+
+newman
+
+swipre-historial (RF-003 Visualizar historial de acciones)
+
+<span class="req">→ 0 - Reiniciar estado en memoria (solo una vez, al inicio)</span>
+  <span class="meth">POST</span> http://localhost:3013/api/__reset [200 OK]
+  <span class="ok">√  Status 200 OK</span>
+
+<span class="req">→ CP-03-01 (Flujo Alterno) - Historial vacío al inicio</span>
+  <span class="meth">GET</span> http://localhost:3013/api/historial [200 OK]
+  <span class="ok">√  Status 200 OK</span>
+  <span class="ok">√  El historial esta vacio</span>
+
+<span class="req">→ CP-03-01 - Registrar primera acción (Walter Salas)</span>
+  <span class="meth">POST</span> http://localhost:3013/api/historial [201 Created]
+  <span class="ok">√  Status 201 Created</span>
+
+<span class="req">→ CP-03-01 - Registrar segunda acción (Angel Vargas)</span>
+  <span class="meth">POST</span> http://localhost:3013/api/historial [201 Created]
+  <span class="ok">√  Status 201 Created</span>
+
+<span class="req">→ CP-03-01 - Consultar historial (más reciente primero)</span>
+  <span class="meth">GET</span> http://localhost:3013/api/historial [200 OK]
+  <span class="ok">√  Status 200 OK</span>
+  <span class="ok">√  2 registros</span>
+  <span class="ok">√  El mas reciente (Angel Vargas) va primero</span>
+
+<span class="req">→ CP-03-02 - Registro automático se refleja de inmediato</span>
+  <span class="meth">POST</span> http://localhost:3013/api/historial [201 Created]
+  <span class="ok">√  Status 201 Created</span>
+
+<span class="req">→ CP-03-03 - Consistencia: 3 operaciones = 3 registros, sin duplicados</span>
+  <span class="meth">GET</span> http://localhost:3013/api/historial [200 OK]
+  <span class="ok">√  Status 200 OK</span>
+  <span class="ok">√  Exactamente 3 registros (sin duplicados ni omisiones)</span>
+
+<span class="summary">  requests: 7/7   assertions: 11/11   0 failed</span>
+</div>
+</body>
+</html>

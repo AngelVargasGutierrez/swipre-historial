@@ -10,16 +10,20 @@ Reproduce la lógica real de `backend/models/reporteModel.js` (registrarAccion /
 - **CP-03-02** (error/edge, Prueba Unitaria): registro automático al detectar una operación; respeta el límite de 20 registros más recientes.
 - **CP-03-03** (aceptación): cada operación real ejecutada aparece exactamente una vez en el historial, sin duplicados ni omisiones.
 
-## Dos capas de pruebas
+## Tres capas de pruebas
 
 - **Unitarias (Vitest)** — `src/reporteModel.js` probado directamente en memoria.
 - **E2E (Playwright)** — `server.js` expone la misma lógica como API real (Express) y `public/index.html` es una página real con formulario y tabla; Playwright abre un navegador Chromium real, registra acciones y valida lo que se ve en pantalla (CP-03-01, CP-03-02).
+- **API (Postman/Newman)** — `postman/swipre-historial.postman_collection.json` trae 7 peticiones HTTP directas contra `server.js` (CP-03-01, CP-03-02, CP-03-03), ejecutadas con **Newman** (el CLI de Postman).
 
 ## Cómo ejecutar
 
 ```bash
 npm install
-npm test          # pruebas unitarias con Vitest
+npm test               # pruebas unitarias con Vitest
 npx playwright install --with-deps chromium   # solo la primera vez
-npm run test:e2e  # pruebas E2E con Playwright (navegador real)
+npm run test:e2e       # pruebas E2E con Playwright (navegador real)
+
+node server.js &        # levanta el servidor en http://localhost:3013
+npm run test:postman    # corre la colección de Postman con Newman
 ```
