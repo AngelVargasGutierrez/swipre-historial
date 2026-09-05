@@ -10,9 +10,16 @@ Reproduce la lógica real de `backend/models/reporteModel.js` (registrarAccion /
 - **CP-03-02** (error/edge, Prueba Unitaria): registro automático al detectar una operación; respeta el límite de 20 registros más recientes.
 - **CP-03-03** (aceptación): cada operación real ejecutada aparece exactamente una vez en el historial, sin duplicados ni omisiones.
 
+## Dos capas de pruebas
+
+- **Unitarias (Vitest)** — `src/reporteModel.js` probado directamente en memoria.
+- **E2E (Playwright)** — `server.js` expone la misma lógica como API real (Express) y `public/index.html` es una página real con formulario y tabla; Playwright abre un navegador Chromium real, registra acciones y valida lo que se ve en pantalla (CP-03-01, CP-03-02).
+
 ## Cómo ejecutar
 
 ```bash
 npm install
-npm test
+npm test          # pruebas unitarias con Vitest
+npx playwright install --with-deps chromium   # solo la primera vez
+npm run test:e2e  # pruebas E2E con Playwright (navegador real)
 ```

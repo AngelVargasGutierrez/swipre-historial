@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>swipre-historial — Historial de Acciones (RF-003)</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; }
+    h1 { font-size: 20px; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input { width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 14px; padding: 8px 16px; background: #b91c1c; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; font-size: 13px; text-align: left; }
+    th { background: #2c3e50; color: white; }
+    #vacio { margin-top: 16px; color: #666; font-style: italic; }
+  </style>
+</head>
+<body>
+  <h1>MOPGIMED / SIPGIMED — Historial de Acciones (RF-003)</h1>
+  <form id="form-accion">
+    <label for="usuario">Usuario</label>
+    <input id="usuario" name="usuario" type="text">
+    <label for="accion">Acción</label>
+    <input id="accion" name="accion" type="text">
+    <label for="modulo">Módulo</label>
+    <input id="modulo" name="modulo" type="text">
+    <label for="detalle">Detalle</label>
+    <input id="detalle" name="detalle" type="text">
+    <button type="submit" id="btn-registrar">Registrar acción</button>
+  </form>
+
+  <p id="vacio" hidden>No hay acciones registradas.</p>
+  <table id="tabla-historial" hidden>
+    <thead>
+      <tr><th>Usuario</th><th>Acción</th><th>Módulo</th><th>Detalle</th></tr>
+    </thead>
+    <tbody id="tabla-body"></tbody>
+  </table>
+
+  <script src="app.js"></script>
+</body>
+</html>

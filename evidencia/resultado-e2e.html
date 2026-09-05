@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin:0; background:#1e1e1e; font-family:'Cascadia Code','Consolas',monospace; }
+  .titlebar { background:#323233; color:#ccc; padding:8px 14px; font-size:13px; border-bottom:1px solid #000; }
+  .term { padding:20px 24px; color:#d4d4d4; font-size:14px; line-height:1.6; white-space:pre-wrap; width:1020px; }
+  .cmd { color:#9cdcfe; }
+  .prompt { color:#6a9955; }
+  .ok { color:#4ec9b0; font-weight:bold; }
+  .desc { color:#ce9178; }
+  .summary { color:#569cd6; font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="titlebar">swipre-historial — npm run test:e2e (Playwright)</div>
+<div class="term">
+<span class="prompt">PS D:\...\swipre-historial&gt;</span> <span class="cmd">npx playwright test</span>
+
+Running 3 tests using 1 worker
+
+<span class="ok">  ok 1</span> <span class="desc">CP-03-01 - Visualización correcta del historial de acciones de usuarios (E2E, navegador real)</span> &gt; muestra "No hay acciones registradas" cuando el historial está vacío (Flujo Alterno) (254ms)
+<span class="ok">  ok 2</span> <span class="desc">CP-03-01 - Visualización correcta del historial de acciones de usuarios (E2E, navegador real)</span> &gt; registra una acción desde el formulario real y la muestra en la tabla, más reciente primero (572ms)
+<span class="ok">  ok 3</span> <span class="desc">CP-03-02 - Registro automático de auditoría al modificar entidades (E2E, navegador real)</span> &gt; la acción registrada aparece automáticamente sin recargar la página manualmente (271ms)
+
+<span class="summary">  3 passed</span> (5.5s)
+</div>
+</body>
+</html>
